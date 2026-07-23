@@ -106,7 +106,7 @@ npx deepeval test run
 Run an individual evaluation
 
 ```bash
-npx deepeval test run tests/deepeval/answerRelevancy.test.js
+python FaithfullnessCheck.py        
 ```
 
 ---
