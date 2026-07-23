@@ -76,6 +76,7 @@ export async function askBankAgent(userPrompt: string) {
     //console.log("Claude Response:");
     // console.log("Claude Response:" + JSON.stringify(response.content, null, 2));
     const toolResults: any[] = [];
+    let toolOutput: any = null;
     //console.log(JSON.stringify(response.content, null, 2));
     for (const content of response.content) {
 
@@ -96,7 +97,7 @@ export async function askBankAgent(userPrompt: string) {
                     tool_use_id: content.id,
                     content: JSON.stringify(toolResult)
                 });
-
+toolOutput = toolResult;
                 console.log("Tool Result:", toolResult);
             }
             if (content.name === "get_weather") {
@@ -110,6 +111,7 @@ export async function askBankAgent(userPrompt: string) {
                     tool_use_id: content.id,
                     content: JSON.stringify(toolResult)
                 });
+                toolOutput = toolResult;
             }
             if (content.name === "transfer_money") {
 
@@ -122,7 +124,12 @@ export async function askBankAgent(userPrompt: string) {
                     input.accountNumber,
                     input.amount
                 );
-
+toolResults.push({
+    type: "tool_result",
+    tool_use_id: content.id,
+    content: JSON.stringify(toolResult)
+});
+toolOutput = toolResult;
                 console.log(toolResult);
             }
 
@@ -163,5 +170,8 @@ export async function askBankAgent(userPrompt: string) {
 
     }
 
-    return answers.join("\n");
+   return {
+    answer: answers.join("\n"),
+    toolOutput
+};
 }

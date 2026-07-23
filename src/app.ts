@@ -11,9 +11,7 @@ app.post("/chat", async (req, res) => {
 
     const answer = await askBankAgent(prompt);
 
-    res.json({
-        answer
-    });
+   res.json(answer);
 
 });
 
